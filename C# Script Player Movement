@@ -1,0 +1,56 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+//Script designed for Tank movement.
+public class Tank_Controller : MonoBehaviour
+
+{
+    //Used to control the speed of the player.
+    [SerializeField] private float speed = 5;
+    //Reference to the character controller component on the player.
+    private CharacterController controller;
+    //Stores input values to move the player.
+    private Vector3 move;
+    //This is used to check the player is grounded.
+    [SerializeField] private Transform groundChecker;
+    //how large of a radius around the groundChecker to check for grounding.
+    [SerializeField] private float groundDistance = 0.1f;
+    //Which layer to check for grounding on.
+    [SerializeField] private LayerMask ground;
+    //Stores the velocity for jumping the player.
+    private Vector3 velocity;
+    //stores to boolean values of true or false dependant on if the player is grounded.
+    private bool bIsGrounded;
+    void Start()
+    {
+        //This gets a reference to the chracter controller on the object.
+        controller = GetComponent<CharacterController>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        //Checks around the transform of the player GroundChecker to see if any objects have the ground layer.
+        //If it detects the ground layer we know that the player is on the ground.
+        bIsGrounded = Physics.CheckSphere(groundChecker.position, groundDistance, ground, QueryTriggerInteraction.Ignore);
+        //If player is grounded and velocity is false then set the velocity to 0f. this stops the player from moving down.
+        if (bIsGrounded && velocity.y < 0)
+        {
+            velocity.y = 0f;
+        }
+        //This creates a new vector based on the input from the horizontal and vertical axis.
+        //(Vertical = W&S and horizontal = A&D) (or up and down arrow keys, alongside the right and left keys).
+        move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
+        //This apliies the movement from the input to the character controller.
+        controller.Move(move * Time.deltaTime * speed);
+        //If move is not equal to zero, then change the forward direction to facing direction of movement.
+        if (move != Vector3.zero)
+        {
+            transform.forward = move;
+        }
+        //This Adds gravity to the player.
+        velocity.y += Physics.gravity.y * Time.deltaTime;
+        //Applies final movement calculation to the player controller.
+        controller.Move(velocity * Time.deltaTime);
+    }
+}
