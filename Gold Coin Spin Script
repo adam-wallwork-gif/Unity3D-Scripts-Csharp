@@ -1,0 +1,21 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class GoldCoinSpin : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    //Code for spinning the coin the on the x axis.
+    //f is the float and the number (5) is the speed.
+    {
+        transform.Rotate(5f, 0f, 0f);
+    }
+
+}
