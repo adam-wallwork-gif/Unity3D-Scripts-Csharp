@@ -8,6 +8,6 @@ public class CollectCoins : MonoBehaviour
     void OnTriggerEnter()
     {
         GameObject.Destroy(gameObject);
-        GameObject.FindGameObjectWithTag("Finish").GetComponent<SCR_OpenMaze>().AddCoins();
+
     }
 }
